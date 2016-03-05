@@ -14,11 +14,11 @@ angular.module('gdgXBoomerang')
         // Change to 'EEEE, MMMM d, y - H:mm' for 24 hour time format.
         'dateFormat'    : 'EEEE, MMMM d, y - h:mm a',
         'cover' : {
-            title: 'Worldwide GDG Events',
-            subtitle: 'Directory of developer events organized by tags and displayed on a global map.',
+            title: 'Android Development for Beginners',
+            subtitle: 'Google Developers Study Jams is a free series of global, community-run, in-person study groups.',
             button: {
-                text: 'Find local events',
-                url: 'http://gdg.events/'
+                text: 'Learn More',
+                url: 'http://developerstudyjams.com/'
             }
         },
         'activities': {
@@ -30,7 +30,8 @@ angular.module('gdgXBoomerang')
             panels: true,
             designSprints: true,
             roundTables: true
-        }
+        },
+        'HUB_IP': 'https://hub.gdgx.io'
         // To update the snippet which is used for sharing, see the TODO in the index.html.
     };
 });
