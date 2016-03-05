@@ -70,7 +70,7 @@ angular.module('gdgXBoomerang')
         'activities': {
             techTalks: true,
             codeLabs: true,
-            hackathons: true,
+            hackathons: false,
             devFests: true,
             appClinics: true,
             panels: true,
@@ -380,21 +380,6 @@ angular.module('gdgXBoomerang')
 });
 
 angular.module('gdgXBoomerang')
-.controller('OrganizersController', function ($http, Config, NavService) {
-    var vm = this;
-    vm.loading = false;
-    NavService.setNavTab(4);
-
-    var url = 'https://hub.gdgx.io/api/v1/chapters/' + Config.id + '?callback=JSON_CALLBACK';
-    var headers = { 'headers': { 'Accept': 'application/json;' }, 'timeout': 10000 };
-    $http.jsonp(url, headers).success(function (data) {
-        if (data.organizers) {
-            vm.organizers = data.organizers;
-        }
-    });
-});
-
-angular.module('gdgXBoomerang')
 .controller('NewsController', function ($http, $timeout, $filter, $log, $sce, Config, NavService) {
     var vm = this;
     NavService.setNavTab(1);
@@ -461,6 +446,21 @@ angular.module('gdgXBoomerang')
         vm.status = 'ready';
         $log.debug('Sorry, we failed to retrieve the news from the Google+ API: ' + error);
     }
+});
+
+angular.module('gdgXBoomerang')
+.controller('OrganizersController', function ($http, Config, NavService) {
+    var vm = this;
+    vm.loading = false;
+    NavService.setNavTab(4);
+
+    var url = 'https://hub.gdgx.io/api/v1/chapters/' + Config.id + '?callback=JSON_CALLBACK';
+    var headers = { 'headers': { 'Accept': 'application/json;' }, 'timeout': 10000 };
+    $http.jsonp(url, headers).success(function (data) {
+        if (data.organizers) {
+            vm.organizers = data.organizers;
+        }
+    });
 });
 
 angular.module('gdgXBoomerang')
