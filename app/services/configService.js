@@ -24,7 +24,7 @@ angular.module('gdgXBoomerang')
         'activities': {
             techTalks: true,
             codeLabs: true,
-            hackathons: false,
+            hackathons: true,
             devFests: true,
             appClinics: true,
             panels: true,
