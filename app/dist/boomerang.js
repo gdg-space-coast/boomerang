@@ -60,23 +60,24 @@ angular.module('gdgXBoomerang')
         // Change to 'EEEE, MMMM d, y - H:mm' for 24 hour time format.
         'dateFormat'    : 'EEEE, MMMM d, y - h:mm a',
         'cover' : {
-            title: 'Worldwide GDG Events',
-            subtitle: 'Directory of developer events organized by tags and displayed on a global map.',
+            title: 'Android Development for Beginners',
+            subtitle: 'Google Developers Study Jams is a free series of global, community-run, in-person study groups.',
             button: {
-                text: 'Find local events',
-                url: 'http://gdg.events/'
+                text: 'Learn More',
+                url: 'http://developerstudyjams.com/'
             }
         },
         'activities': {
             techTalks: true,
             codeLabs: true,
-            hackathons: false,
+            hackathons: true,
             devFests: true,
             appClinics: true,
             panels: true,
             designSprints: true,
             roundTables: true
-        }
+        },
+        'HUB_IP': 'https://hub.gdgx.io'
         // To update the snippet which is used for sharing, see the TODO in the index.html.
     };
 });
@@ -244,7 +245,7 @@ angular.module('gdgXBoomerang')
     vm.dateFormat = Config.dateFormat;
     vm.events = { past:[], future:[] };
 
-    var url = 'https://hub.gdgx.io/api/v1/chapters/' + Config.id + '/events/upcoming?callback=JSON_CALLBACK';
+    var url = Config.HUB_IP + '/api/v1/chapters/' + Config.id + '/events/upcoming?callback=JSON_CALLBACK';
     var headers = { 'headers': { 'Accept': 'application/json;' }, 'timeout': 10000 };
     $http.jsonp(url, headers)
         .success(function (data) {
@@ -269,7 +270,7 @@ angular.module('gdgXBoomerang')
         });
 
     var getPastEventsPage = function(page) {
-        var url = 'https://hub.gdgx.io/api/v1/chapters/' + Config.id +
+        var url = Config.HUB_IP + '/api/v1/chapters/' + Config.id +
             '/events/past?callback=JSON_CALLBACK&page=' + page;
         var headers = { 'headers': {'Accept': 'application/json;'}, 'timeout': 10000 };
         $http.jsonp(url, headers)
@@ -454,7 +455,7 @@ angular.module('gdgXBoomerang')
     vm.loading = false;
     NavService.setNavTab(4);
 
-    var url = 'https://hub.gdgx.io/api/v1/chapters/' + Config.id + '?callback=JSON_CALLBACK';
+    var url = Config.HUB_IP + '/api/v1/chapters/' + Config.id + '?callback=JSON_CALLBACK';
     var headers = { 'headers': { 'Accept': 'application/json;' }, 'timeout': 10000 };
     $http.jsonp(url, headers).success(function (data) {
         if (data.organizers) {
@@ -498,33 +499,6 @@ angular.module('gdgXBoomerang')
                 'Logging out of your Google Account and logging back in may resolve this issue.';
             vm.loading = false;
         });
-});
-
-'use strict';
-
-angular.module('gdgXBoomerang')
-.directive('gplusPerson', function ($http, $filter, Config) {
-    return {
-        restrict: 'EA',
-        templateUrl: 'app/organizers/components/gplus_person.html',
-        scope: {
-            gplusId: '='
-        },
-        link: function (scope) {
-            scope.$watch('gplusId', function (oldVal, newVal) {
-                if (newVal) {
-                    $http.jsonp('https://www.googleapis.com/plus/v1/people/' + newVal +
-                        '?callback=JSON_CALLBACK&fields=aboutMe%2CdisplayName%2Cimage&key=' + Config.googleApi)
-                        .success(function (data) {
-                            if (data && data.image && data.image.url) {
-                                data.image.url = data.image.url.replace('sz=50', 'sz=170');
-                            }
-                            scope.person = data;
-                        });
-                }
-            });
-        }
-    };
 });
 
 angular.module('gdgXBoomerang')
@@ -608,5 +582,32 @@ angular.module('gdgXBoomerang')
 .directive('newsItemFooter', function () {
     return {
         templateUrl: 'app/news/components/newsItemFooter.html'
+    };
+});
+
+'use strict';
+
+angular.module('gdgXBoomerang')
+.directive('gplusPerson', function ($http, $filter, Config) {
+    return {
+        restrict: 'EA',
+        templateUrl: 'app/organizers/components/gplus_person.html',
+        scope: {
+            gplusId: '='
+        },
+        link: function (scope) {
+            scope.$watch('gplusId', function (oldVal, newVal) {
+                if (newVal) {
+                    $http.jsonp('https://www.googleapis.com/plus/v1/people/' + newVal +
+                        '?callback=JSON_CALLBACK&fields=aboutMe%2CdisplayName%2Cimage&key=' + Config.googleApi)
+                        .success(function (data) {
+                            if (data && data.image && data.image.url) {
+                                data.image.url = data.image.url.replace('sz=50', 'sz=170');
+                            }
+                            scope.person = data;
+                        });
+                }
+            });
+        }
     };
 });
